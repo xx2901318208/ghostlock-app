@@ -170,12 +170,12 @@ android {
     }
 
     namespace = 'com.ghostlock.app'
-    compileSdk 35
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.ghostlock.app"
         minSdk 28
-        targetSdk 35
+        targetSdk 34
         versionCode gitVersionCode
         versionName appVersionName
         ndk {
