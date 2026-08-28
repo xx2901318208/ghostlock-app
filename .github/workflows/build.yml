@@ -15,41 +15,8 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
 
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
-
-      - name: Install NDK
-        run: sdkmanager "ndk;29.0.14206865"
-
-      - name: Install Rust toolchain
-        uses: dtolnay/rust-toolchain@stable
-        with:
-          targets: aarch64-linux-android
-
-      - name: Set NDK environment
-        run: |
-          echo "ANDROID_NDK_HOME=$ANDROID_HOME/ndk/29.0.14206865" >> $GITHUB_ENV
-          echo "NDK_ROOT=$ANDROID_HOME/ndk/29.0.14206865" >> $GITHUB_ENV
-
-      - name: Build ghostlock native binary
-        run: |
-          NDK_CC=$ANDROID_HOME/ndk/29.0.14206865/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android35-clang
-          $NDK_CC -O2 -flto -Wall -Wno-unused-parameter -Wno-sign-compare -Wno-unused-function \
-            -Isrc/core -Isrc/kernels \
-            -DTARGET_CONFIG_H=\"target.h\" \
-            -fPIE -pie -pthread -flto \
-            src/core/main.c src/core/offsets_json.c src/core/util.c src/core/fops.c \
-            -o ghostlock
-          mkdir -p app/src/main/jniLibs/arm64-v8a
-          cp ghostlock app/src/main/jniLibs/arm64-v8a/libghostlock.so
-
-      - name: Build ghostlock-extract for Android
-        run: |
-          export CC_aarch64_linux_android=$ANDROID_HOME/ndk/29.0.14206865/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android35-clang
-          export AR_aarch64_linux_android=$ANDROID_HOME/ndk/29.0.14206865/toolchains/llvm/prebuilt/linux-x86_64/bin/llvm-ar
-          export CARGO_TARGET_AARCH64_LINUX_ANDROID_LINKER=$CC_aarch64_linux_android
-          cargo build --release --target aarch64-linux-android --manifest-path tools/extract_rs/Cargo.toml
-          cp tools/extract_rs/target/aarch64-linux-android/release/ghostlock-extract app/src/main/jniLibs/arm64-v8a/libextract.so
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
 
       - name: Build APK
         run: chmod +x gradlew && ./gradlew :app:assembleRelease --no-daemon

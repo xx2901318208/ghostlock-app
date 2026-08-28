@@ -170,14 +170,12 @@ android {
     }
 
     namespace = 'com.ghostlock.app'
-    compileSdk {
-        version = release(37)
-    }
+    compileSdk 35
 
     defaultConfig {
         applicationId "com.ghostlock.app"
-        minSdk 35
-        targetSdk 37
+        minSdk 28
+        targetSdk 35
         versionCode gitVersionCode
         versionName appVersionName
         ndk {
@@ -215,7 +213,6 @@ android {
         targetCompatibility JavaVersion.VERSION_17
     }
 
-    enableKotlin = false
 
     packaging {
         jniLibs {
@@ -225,8 +222,6 @@ android {
 }
 
 tasks.named('preBuild') {
-    dependsOn(rootProject.tasks.named('prepareGhostlockJniLibs'))
-    dependsOn(rootProject.tasks.named('prepareGhostlockExtractJniLibs'))
     dependsOn(tasks.named('generateSupportedKernels'))
 }
 
