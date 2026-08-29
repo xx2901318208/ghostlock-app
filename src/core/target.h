@@ -4,7 +4,7 @@
 #define BUILD_VARIANT_LABEL "ghostlock_iqoo_neo9sp"
 
 /* Kernel address layout - iQOO Neo9S Pro+ 6.1.145-android14-11-maybe-dirty */
-#define KIMAGE_TEXT_BASE 0xFFFFFFDC80000000ULL
+#define KIMAGE_TEXT_BASE 0xFFFFFFC008000000ULL
 #define MTK_VADDR_BASE 0ULL
 #define P0_PAGE_OFFSET 0xFFFFFF8000000000ULL
 #define P0_PHYS_OFFSET 0x80000000ULL
